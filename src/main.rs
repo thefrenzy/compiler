@@ -2,31 +2,17 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
 
+mod core;
+mod lexer;
 
-enum TokenType{
-	
-	IDENTIFIER(String),
-	LEFTPAR,
-	RIGHTPAR,
-	EQ,
-	Number(i64),
-	
-}
+use crate::core::Text;
+
+use lexer::scanner;
 
 
-struct Text {
-	source: String,
-	current: u64,
-}
-
-
-fn scanner(text: &Text, tokens: &mut Vec<TokenType>){
-	
-
-}
 
 fn main() -> std::io::Result<()>{
-	let file = File::open("foo.txt")?;
+	let file = File::open("source.txt")?;
 	let mut buf_reader = BufReader::new(file);
 	let mut contents = String::new();
 	buf_reader.read_to_string(&mut contents)?;
@@ -36,15 +22,19 @@ fn main() -> std::io::Result<()>{
 		return Ok(());
 	}
 		
-	let text = 
+	let mut text = 
 			Text{
 			source : contents,
 			current : 0,
+			length : 0,
 			};
+	text.length = text.source.len();
 	
 	let mut tokens = vec![];
 	
-	scanner(&text, &mut tokens);
+	scanner(&mut text, &mut tokens);
+	
+	println!("{:?}", tokens);
 	
 	Ok(())
 	
