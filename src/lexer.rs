@@ -9,9 +9,15 @@ pub fn scanner(text: &mut Text, tokens: &mut Vec<TokenType>){
 		let c = bytes[text.current as usize] as char;
 		
 		match c {
-		'(' => tokens.push(TokenType::LEFTPAR),
-		')' => tokens.push(TokenType::RIGHTPAR),
-		'=' => tokens.push(TokenType::EQ),
+		'(' => {tokens.push(TokenType::LEFTPAR);
+				text.current += 1;
+				}
+		')' => {tokens.push(TokenType::RIGHTPAR);
+				text.current += 1;
+				}
+		'=' => {tokens.push(TokenType::EQ);
+				text.current += 1;
+				}
 		c if c.is_alphabetic()=> {
 				let mut word = String::new();
 				word.push(c);
@@ -59,11 +65,14 @@ pub fn scanner(text: &mut Text, tokens: &mut Vec<TokenType>){
 			tokens.push(TokenType::NUMBER(number.clone()));
 		}
 			
-		_ => text.current += 1,
+		' ' | '\t' | '\n' | '\r' => text.current += 1,
 		
+		_ => text.current += 1,
+			
 			}
 		}
 		
 		
 		}
+		
 
